@@ -51,7 +51,7 @@ def loadAddressData(file_path):
             address = row[0]  # Assuming the address is in the first column
             addressData.append(address)
             address_to_index[address] = index # Map address to index, for later search in DistanceData
-    return addressData, address_to_index
+    return address_to_index
 
 def displayAddressData(addressData):
     print("Addresses:")

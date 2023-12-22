@@ -1,6 +1,6 @@
 from package import Package
 from truck import Truck
-from data_loader import loadPackageData, loadDistanceData, displayAddressData, displayDistanceData, loadAddressData
+from data_loader import loadPackageData, loadDistanceData, loadAddressData
 from hash_table import HashTable
 
 # Greedy algorithm
@@ -52,7 +52,7 @@ def deliver_to(truck, destination, hash_table, delivery_time):
             hash_table.update_package_status(package.package_id, 'delivered', delivery_time)
 
 
- # Check if all packages in the package hash table have been delivered
+# Check if all packages in the package hash table have been delivered
 def all_packages_delivered(hash_table):
     for pkg in hash_table.get_all_packages():
         if pkg.status != 'delivered':
@@ -90,15 +90,15 @@ def main():
     package_list = hash_table.get_all_packages()
 
     distance_data = loadDistanceData('/Users/rodrigo/Documents/repos/TSP-Routing/WGUPS-distance-matrix.csv')
-    addressData, address_to_index = loadAddressData('/Users/rodrigo/Documents/repos/TSP-Routing/WGUPS-address.csv')
+    address_to_index = loadAddressData('/Users/rodrigo/Documents/repos/TSP-Routing/WGUPS-address.csv')
 
     # Initialize trucks
-    trucks = [Truck(1)]
-    # Initial package loading to trucks - define your logic here
-    for pkg in package_list:
-        for truck in trucks:
-            truck.add_package(pkg)
-            break
+    trucks = [Truck(1), Truck(2)]
+    # # Initial package loading to trucks - define your logic here
+    # for pkg in package_list:
+    #     for truck in trucks:
+    #         truck.add_package(pkg)
+    #         break
 
     # Continue delivery rounds until all packages are delivered
     while not all_packages_delivered(hash_table):
@@ -109,19 +109,18 @@ def main():
                     if not len(truck.packages) >= truck.capacity and not pkg in truck.packages:
                         truck.add_package(pkg)
                         break
-
         # Perform the delivery round
         perform_delivery_round(trucks, distance_data, address_to_index, hash_table)
 
-        # After all deliveries are complete, print the total mileage for each truck
-        print("\nTotal Mileage for Each Truck:")
-        for truck in trucks:
-            print(f"Truck {truck.truck_id}: {truck.total_distance} miles")
+    # After all deliveries are complete, print the total mileage for each truck
+    print("\nTotal Mileage for Each Truck:")
+    for truck in trucks:
+        print(f"Truck {truck.truck_id}: {truck.total_distance} miles")
 
-        # After all deliveries are complete, print the delivery time for each package
-        print("\nDelivery Times for Each Package:")
-        for package in hash_table.get_all_packages():
-            print(f"Package ID: {package.package_id}, Delivery Time: {package.delivery_time}")
+    # After all deliveries are complete, print the delivery time for each package
+    print("\nDelivery Times for Each Package:")
+    for package in hash_table.get_all_packages():
+        print(f"Package ID: {package.package_id}, Delivery Time: {package.delivery_time}")
 
     # '''' TESTING AREA '''''
 
