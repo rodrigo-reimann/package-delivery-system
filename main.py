@@ -2,6 +2,7 @@ from truck import Truck
 from data_loader import loadPackageData, loadDistanceData, loadAddressData
 from hash_table import HashTable
 from logistics import perform_delivery_round
+import datetime
 
 
 # Initialize hash table and load data
@@ -28,11 +29,11 @@ for pkg in package_list:
 
 # First delivers
 perform_delivery_round(trucks, distance_data, address_to_index, hash_table)
-print(f"\ntruck 1 current time: {trucks[0].current_time} truck 2 current time: {trucks[1].current_time}")
-print("Total Mileage for Each Truck:")
-for truck in trucks:
-    print(f"Truck {truck.truck_id}: {truck.total_distance} miles")
-print("")
+# print(f"\ntruck 1 current time: {trucks[0].current_time} truck 2 current time: {trucks[1].current_time}")
+# print("Total Mileage for Each Truck:")
+# for truck in trucks:
+#     print(f"Truck {truck.truck_id}: {truck.total_distance} miles")
+# print("")
 
 # Load second rounds
 for pkg in package_list:
@@ -45,11 +46,21 @@ for pkg in package_list:
 
 # Second delivers
 perform_delivery_round(trucks, distance_data, address_to_index, hash_table)
-print(f"\ntruck 1 current time: {trucks[0].current_time} truck 2 current time: {trucks[1].current_time}")
-print("Total Mileage for Each Truck:")
-for truck in trucks:
-    print(f"Truck {truck.truck_id}: {truck.total_distance} miles")
-print("") 
+# print(f"\ntruck 1 current time: {trucks[0].current_time} truck 2 current time: {trucks[1].current_time}")
+# print("Total Mileage for Each Truck:")
+# for truck in trucks:
+#     print(f"Truck {truck.truck_id}: {truck.total_distance} miles")
+# print("")
+
+# for truck in trucks:
+#     print(f"\nStatus of all packages in Truck {truck.truck_id}:")
+#     for package in truck.packages:
+#         print(f"Package ID: {package.package_id}, Status: {package.status}, Delivery Time: {package.delivery_time if package.delivery_time else 'N/A'}")
+              
+# After all deliveries are complete, print the delivery time for each package
+print("\nDelivery Times for Each Package:")
+for package in hash_table.get_all_packages():
+    print(f"Package ID: {package.package_id}, Delivery Time: {package.delivery_time}")
 
 
 # GUI
@@ -65,13 +76,29 @@ def get_total_mileage(trucks):
     # Replace this with actual logic to retrieve total mileage
     return sum(truck.total_distance for truck in trucks) 
 
+def print_package_status_in_time_window(package_list, start_time_str, end_time_str):
+    # Convert input strings to datetime objects for comparison
+    start_time = datetime.datetime.strptime(start_time_str, '%I:%M %p').time()
+    end_time = datetime.datetime.strptime(end_time_str, '%I:%M %p').time()
+
+    print(f"\nPackage status between {start_time_str} and {end_time_str}:")
+
+    for package in package_list:
+        # Only include packages that have a delivery time set
+        if package.delivery_time and isinstance(package.delivery_time, datetime.datetime):
+            package_time = package.delivery_time.time()
+            if start_time <= package_time <= end_time:
+                print(f"Package ID: {package.package_id}, Status: {package.status}, Delivery Time: {package.delivery_time.strftime('%I:%M %p')}")
+
+
 def main_menu():
     while True:
         print("\nDelivery System Menu:")
         print("1. Check Package Delivery Status")
         print("2. Check Total Mileage")
-        print("3. Exit")
-        choice = input("Enter your choice (1/2/3): ")
+        print("3. Print Package Status in Time Window")
+        print("4. Exit")
+        choice = input("Enter your choice (1/2/3/4): ")
 
         if choice == '1':
             package_id = input("Enter Package ID: ")
@@ -84,9 +111,13 @@ def main_menu():
             mileage = get_total_mileage(trucks)
             print(f"Total mileage traveled by all trucks: {mileage} miles")
         elif choice == '3':
+            start_time_str = input("Enter the start time (HH:MM AM/PM): ")
+            end_time_str = input("Enter the end time (HH:MM AM/PM): ")
+            print_package_status_in_time_window(package_list, start_time_str, end_time_str)
+        elif choice == '4':
             print("Exiting the delivery system.")
             break
         else:
-            print("Invalid choice. Please enter 1, 2, or 3.")
+            print("Invalid choice. Please enter 1, 2, 3, or 4.")
 
 main_menu()
