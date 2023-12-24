@@ -2,6 +2,7 @@ from package import Package
 from truck import Truck
 from data_loader import loadPackageData, loadDistanceData, loadAddressData
 from hash_table import HashTable
+import datetime
 
 # Greedy algorithm
 def find_nearest(current_index, unvisited, distance_data, address_to_index):
@@ -26,15 +27,21 @@ def deliver_packages(truck, distance_data, address_to_index, hash_table):
     while unvisited:
         current_index = address_to_index[current_location]
         nearest = find_nearest(current_index, unvisited, distance_data, address_to_index)
-        
+
         # Calculate the distance to the nearest location
         distance_to_nearest = distance_data[current_index][address_to_index[nearest]]
+        if distance_to_nearest == 0.0 and current_index != address_to_index[nearest]:
+            distance_to_nearest = distance_data[address_to_index[nearest]][current_index]
+
+        # # Debug: Show current and next location, and the distance
+        # print(f"Current location: {current_location}, Next location: {nearest}, Distance: {distance_to_nearest} miles")
         
-        # Update the truck's total distance for this leg of the journey
+        # Update the truck's total distance and current time for this leg of the journey
         truck.travel_distance(distance_to_nearest)
+
         
         # Now 'deliver' the packages (update their status)
-        deliver_to(truck, nearest, hash_table, truck.current_time)  # Make sure deliver_to is defined correctly
+        deliver_to(truck, nearest, hash_table, truck.current_time)
         
         # Remove the delivered destination from unvisited
         unvisited.remove(nearest)
@@ -45,12 +52,14 @@ def deliver_packages(truck, distance_data, address_to_index, hash_table):
     # After delivering all packages, return to the hub and update the distance
     return_to_hub(truck, distance_data, address_to_index)
 
+
 def deliver_to(truck, destination, hash_table, delivery_time):
     for package in truck.packages:
         if package.address == destination:
             package.update_status('delivered', delivery_time)  # Update package status
             hash_table.update_package_status(package.package_id, 'delivered', delivery_time)
-
+            # Debug print: Package delivery time
+            print(f"Package {package.package_id} delivered at {delivery_time}")
 
 # Check if all packages in the package hash table have been delivered
 def all_packages_delivered(hash_table):
@@ -81,6 +90,7 @@ def return_to_hub(truck, distance_data, address_to_index):
     # Reset the current location to 'HUB'
     truck.current_location = 'HUB'
 
+
 def main():
     # Initialize hash table and load data
     hash_table = HashTable(size=10)
@@ -94,51 +104,51 @@ def main():
 
     # Initialize trucks
     trucks = [Truck(1), Truck(2)]
-    # # Initial package loading to trucks - define your logic here
-    # for pkg in package_list:
-    #     for truck in trucks:
-    #         truck.add_package(pkg)
-    #         break
 
-    # Continue delivery rounds until all packages are delivered
-    while not all_packages_delivered(hash_table):
-        # Re-assess and load any remaining packages for the next round
-        for pkg in hash_table.get_all_packages():
-            if pkg.status != 'delivered':
-                for truck in trucks:
-                    if not len(truck.packages) >= truck.capacity and not pkg in truck.packages:
-                        truck.add_package(pkg)
-                        break
-        # Perform the delivery round
-        perform_delivery_round(trucks, distance_data, address_to_index, hash_table)
 
-    # After all deliveries are complete, print the total mileage for each truck
-    print("\nTotal Mileage for Each Truck:")
+
+
+
+    # Load
+    for pkg in package_list:
+        if pkg.package_id in [13, 39, 14, 15, 16, 34, 19, 20, 21, 7, 29, 4, 40, 1, 30, 8]:
+            trucks[0].add_package(pkg)
+
+    for pkg in package_list:
+        if pkg.package_id in [22, 26, 24, 18, 11, 23, 12, 31, 17, 36, 27, 35, 37, 5, 38, 3, 10]:
+            trucks[1].add_package(pkg)
+
+    '''DELIVER'''
+    perform_delivery_round(trucks, distance_data, address_to_index, hash_table)
+    print(f"\ntruck 1 current time: {trucks[0].current_time} truck 2 current time: {trucks[1].current_time}")
+
+    print("Total Mileage for Each Truck:")
     for truck in trucks:
         print(f"Truck {truck.truck_id}: {truck.total_distance} miles")
+    print("")
 
-    # After all deliveries are complete, print the delivery time for each package
-    print("\nDelivery Times for Each Package:")
-    for package in hash_table.get_all_packages():
-        print(f"Package ID: {package.package_id}, Delivery Time: {package.delivery_time}")
 
-    # '''' TESTING AREA '''''
 
-    # # Now, let's print the package destinations for this truck
-    # destinations = get_package_destinations(truck)
-    # print("Package destinations for truck:", destinations)
 
-    # print("Before delivery:")
-    # for package in truck.packages:
-    #     print(f"Package ID: {package.package_id}, Delivery Status: {package.status}")
 
-    # # Call deliver_packages
-    # deliver = deliver_packages(truck, distance_data, address_to_index, hash_table)
+    # Load
+    for pkg in package_list:
+        if pkg.package_id in [25, 32]:
+            trucks[0].add_package(pkg)
 
-    # # Print the status of the truck after delivery
-    # print("\nAfter delivery:")
-    # for package in truck.packages:
-    #     print(f"Package ID: {package.package_id}, Delivery Status: {package.status}")
+    # Load 
+    for pkg in package_list:
+        if pkg.package_id in [28, 2, 33, 9, 27, 35]:
+            trucks[1].add_package(pkg)  
+
+    '''DELIVER'''
+    perform_delivery_round(trucks, distance_data, address_to_index, hash_table)
+    print(f"\ntruck 1 current time: {trucks[0].current_time} truck 2 current time: {trucks[1].current_time}")
+
+    print("Total Mileage for Each Truck:")
+    for truck in trucks:
+        print(f"Truck {truck.truck_id}: {truck.total_distance} miles")
+    print("") 
 
 
 

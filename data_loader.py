@@ -17,10 +17,10 @@ def loadPackageData(hash_table, file_path):
                 deadline = row[5]
                 weight = row[6]
                 status = row[7]
-                delivery_time = None  # No delivery time in csv
+                special_notes = row[8]
 
                 # Create a Package object
-                package = Package(package_id, address, city, state, zip_code, deadline, weight, status)
+                package = Package(package_id, address, city, state, zip_code, deadline, weight, special_notes, status)
 
                 # Insert the Package object into the HashTable
                 hash_table.insert(package)

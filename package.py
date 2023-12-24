@@ -1,5 +1,5 @@
 class Package:
-    def __init__(self, package_id, address, city, state, zip_code, deadline, weight, status='at the hub'):
+    def __init__(self, package_id, address, city, state, zip_code, deadline, weight, special_notes, status='at the hub'):
         self.package_id = package_id
         self.address = address
         self.city = city
@@ -9,6 +9,7 @@ class Package:
         self.weight = weight
         self.status = status
         self.delivery_time = None
+        self.special_notes = special_notes
 
     def update_status(self, new_status, delivery_time=None):
         self.status = new_status

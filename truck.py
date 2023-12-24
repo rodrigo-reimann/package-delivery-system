@@ -15,6 +15,9 @@ class Truck:
             self.packages.append(package)
             return True
         return False
+        
+    def is_full(self):
+        return len(self.packages) >= self.capacity
 
     def remove_package(self, package_id):
         for package in self.packages:
