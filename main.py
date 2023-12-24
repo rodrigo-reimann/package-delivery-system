@@ -1,3 +1,6 @@
+# Student ID: 010629417
+# Name: Rodrigo Reimann Baston
+
 from truck import Truck
 from data_loader import loadPackageData, loadDistanceData, loadAddressData
 from hash_table import HashTable
@@ -12,6 +15,7 @@ loadPackageData(hash_table, '/Users/rodrigo/Documents/repos/TSP-Routing/WGUPS-pa
 # Create an iterable package list
 package_list = hash_table.get_all_packages()
 
+# Load distance and address data from csv
 distance_data = loadDistanceData('/Users/rodrigo/Documents/repos/TSP-Routing/WGUPS-distance-matrix.csv')
 address_to_index = loadAddressData('/Users/rodrigo/Documents/repos/TSP-Routing/WGUPS-address.csv')
 
@@ -29,11 +33,6 @@ for pkg in package_list:
 
 # First delivers
 perform_delivery_round(trucks, distance_data, address_to_index, hash_table)
-# print(f"\ntruck 1 current time: {trucks[0].current_time} truck 2 current time: {trucks[1].current_time}")
-# print("Total Mileage for Each Truck:")
-# for truck in trucks:
-#     print(f"Truck {truck.truck_id}: {truck.total_distance} miles")
-# print("")
 
 # Load second rounds
 for pkg in package_list:
@@ -46,26 +45,15 @@ for pkg in package_list:
 
 # Second delivers
 perform_delivery_round(trucks, distance_data, address_to_index, hash_table)
-# print(f"\ntruck 1 current time: {trucks[0].current_time} truck 2 current time: {trucks[1].current_time}")
-# print("Total Mileage for Each Truck:")
-# for truck in trucks:
-#     print(f"Truck {truck.truck_id}: {truck.total_distance} miles")
-# print("")
-
-# for truck in trucks:
-#     print(f"\nStatus of all packages in Truck {truck.truck_id}:")
-#     for package in truck.packages:
-#         print(f"Package ID: {package.package_id}, Status: {package.status}, Delivery Time: {package.delivery_time if package.delivery_time else 'N/A'}")
               
 # After all deliveries are complete, print the delivery time for each package
 print("\nDelivery Times for Each Package:")
 for package in hash_table.get_all_packages():
     print(f"Package ID: {package.package_id}, Delivery Time: {package.delivery_time}")
 
-
 # GUI
 def get_delivery_status(package_id, hash_table):
-    # Replace this with actual logic to retrieve status
+    # Retrieve package status
     package = hash_table.lookup(package_id)
     if package:
         return f"Package ID: {package.package_id}, Status: {package.status}, Delivery Time: {package.delivery_time}"
@@ -73,7 +61,7 @@ def get_delivery_status(package_id, hash_table):
         return "Package not found."
 
 def get_total_mileage(trucks):
-    # Replace this with actual logic to retrieve total mileage
+    # Retrieve total mileage
     return sum(truck.total_distance for truck in trucks) 
 
 def print_package_status_in_time_window(package_list, start_time_str, end_time_str):
@@ -92,6 +80,7 @@ def print_package_status_in_time_window(package_list, start_time_str, end_time_s
 
 
 def main_menu():
+    # GUI main menu
     while True:
         print("\nDelivery System Menu:")
         print("1. Check Package Delivery Status")
@@ -120,4 +109,5 @@ def main_menu():
         else:
             print("Invalid choice. Please enter 1, 2, 3, or 4.")
 
+# Run main menu function after deliveries
 main_menu()

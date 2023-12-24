@@ -1,7 +1,7 @@
 import csv
 from package import Package
 
-
+# Load package data csv
 def loadPackageData(hash_table, file_path):
         with open(file_path, mode='r') as file:
             csv_reader = csv.reader(file)
@@ -25,6 +25,7 @@ def loadPackageData(hash_table, file_path):
                 # Insert the Package object into the HashTable
                 hash_table.insert(package)
 
+# Load distance matrix csv
 def loadDistanceData(file_path):
     distanceData = []
     with open(file_path, mode='r') as file:
@@ -36,11 +37,13 @@ def loadDistanceData(file_path):
             distanceData.append(distances)
     return distanceData
 
+# Display distance data
 def displayDistanceData(distanceData):
     print("Distance Matrix:")
     for row in distanceData:
         print(row)
 
+# Load address data csv
 def loadAddressData(file_path):
     addressData = []
     address_to_index = {}
@@ -53,6 +56,7 @@ def loadAddressData(file_path):
             address_to_index[address] = index # Map address to index, for later search in DistanceData
     return address_to_index
 
+# Display address data
 def displayAddressData(addressData):
     print("Addresses:")
     for index, address in enumerate(addressData):

@@ -14,6 +14,7 @@ def find_nearest(current_index, unvisited, distance_data, address_to_index):
 def get_package_destinations(truck):
     return set(package.address for package in truck.packages)
 
+# Deliver packages
 def deliver_packages(truck, distance_data, address_to_index, hash_table):
     current_location = 'HUB'  # Starting point
     unvisited = get_package_destinations(truck)  # Destinations to visit
