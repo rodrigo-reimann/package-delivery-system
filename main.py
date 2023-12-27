@@ -56,7 +56,15 @@ def get_delivery_status(package_id, hash_table):
     # Retrieve package status
     package = hash_table.lookup(package_id)
     if package:
-        return f"Package ID: {package.package_id}, Status: {package.status}, Delivery Time: {package.delivery_time}"
+        return (f"Package ID: {package.package_id}\n" 
+                f"Delivery Address: {package.address}\n"
+                f"Delivery Deadline: {package.deadline}\n"
+                f"Delivery City: {package.city}\n"
+                f"Delivery Zip Code: {package.zip_code}\n"
+                f"Package Weight: {package.weight}lbs\n"
+                f"Delivery Status: {package.status}\n"
+                f"Delivery Time: {package.delivery_time}"
+                )
     else:
         return "Package not found."
 

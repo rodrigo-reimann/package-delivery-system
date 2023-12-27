@@ -35,15 +35,7 @@ class HashTable:
         index = self._hash_function(package_id)
         for package in self.table[index]:
             if package.package_id == package_id:
-                return {
-                    'delivery_address': package.address,
-                    'delivery_deadline': package.deadline,
-                    'delivery_city': package.city,
-                    'delivery_zip_code': package.zip_code,
-                    'package_weight': package.weight,
-                    'delivery_status': package.status,
-                    'delivery_time': package.delivery_time if package.delivery_time else 'N/A'
-                }
+                return package
         return None #Return None if package not found
     
     def update_package_status(self, package_id, new_status, delivery_time):
