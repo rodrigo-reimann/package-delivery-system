@@ -10,14 +10,14 @@ import datetime
 
 # Initialize hash table and load data
 hash_table = HashTable(size=10)
-loadPackageData(hash_table, '/Users/rodrigo/Documents/repos/TSP-Routing/WGUPS-package copy.csv')
+loadPackageData(hash_table, 'WGUPS-package.csv')
 
 # Create an iterable package list
 package_list = hash_table.get_all_packages()
 
 # Load distance and address data from csv
-distance_data = loadDistanceData('/Users/rodrigo/Documents/repos/TSP-Routing/WGUPS-distance-matrix.csv')
-address_to_index = loadAddressData('/Users/rodrigo/Documents/repos/TSP-Routing/WGUPS-address.csv')
+distance_data = loadDistanceData('WGUPS-distance-matrix.csv')
+address_to_index = loadAddressData('WGUPS-address.csv')
 
 # Initialize trucks
 trucks = [Truck(1), Truck(2)]
